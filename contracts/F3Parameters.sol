@@ -64,7 +64,11 @@ contract F3Parameters is Ownable {
 	/// @dev The minimum headroom time in blocks.
 	uint64 public constant MIN_ACTIVATION_HEADROOM_BLOCKS = MIN_ACTIVATION_HEADROOM / BLOCK_TIME;
 
-    /// @notice Updates the activation epoch and manifest data.
+    /// @notice Returns the minimum activation headroom in blocks.
+    /// @return The minimum activation headroom in blocks.
+    function getMinActivationHeadroomBlocks() public pure returns (uint64) {
+        return MIN_ACTIVATION_HEADROOM_BLOCKS;
+    }
     /// @dev Can only be called by the owner and before the expiry and activation epochs.
     /// @param activationEpoch The new activation epoch block number.
     /// @param manifestData The new manifest data.
