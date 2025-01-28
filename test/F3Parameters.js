@@ -47,7 +47,8 @@ describe("F3Parameters", function () {
   describe('Parameter updates', function () {
     it("Should update activation epoch and manifest data successfully", async function () {
       const { f3param, owner } = await loadFixture(deployOneYearExpireFixture);
-      const newActivationEpoch = (await time.latest()) + 1000;
+      const currentBlockNumber = await ethers.provider.getBlockNumber();
+      const newActivationEpoch = currentBlockNumber + 1000;
       const manifestData = "0x123456";
 
       await f3param.connect(owner).updateActivationInformation(newActivationEpoch, manifestData);
@@ -59,7 +60,8 @@ describe("F3Parameters", function () {
 
     it("Should revert if update is attempted after expiry", async function () {
       const { f3param, owner } = await loadFixture(deployOneYearExpireFixture);
-      const newActivationEpoch = (await time.latest()) + 1000;
+      const currentBlockNumber = await ethers.provider.getBlockNumber();
+      const newActivationEpoch = currentBlockNumber + 1000;
       const manifestData = "0x123456";
 
       const expiryTime = BigInt(await f3param.expiresAt());
