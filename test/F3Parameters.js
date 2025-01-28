@@ -47,9 +47,9 @@ describe("F3Parameters", function () {
   describe('Parameter updates', function () {
     it("Should update activation epoch and manifest data successfully", async function () {
       const { f3param, owner } = await loadFixture(deployOneYearExpireFixture);
-      const currentBlockNumber = await ethers.provider.getBlockNumber();
+      const currentBlockNumber = BigInt(await ethers.provider.getBlockNumber());
       const minActivationHeadroomBlocks = await f3param.getMinActivationHeadroomBlocks();
-      const newActivationEpoch = currentBlockNumber + minActivationHeadroomBlocks;
+      const newActivationEpoch = currentBlockNumber + minActivationHeadroomBlocks + BigInt(1);
       const manifestData = "0x123456";
 
       await f3param.connect(owner).updateActivationInformation(newActivationEpoch, manifestData);
@@ -61,9 +61,9 @@ describe("F3Parameters", function () {
 
     it("Should revert if update is attempted after expiry", async function () {
       const { f3param, owner } = await loadFixture(deployOneYearExpireFixture);
-      const currentBlockNumber = await ethers.provider.getBlockNumber();
+      const currentBlockNumber = BigInt(await ethers.provider.getBlockNumber());
       const minActivationHeadroomBlocks = await f3param.getMinActivationHeadroomBlocks();
-      const newActivationEpoch = currentBlockNumber + minActivationHeadroomBlocks;
+      const newActivationEpoch = currentBlockNumber + minActivationHeadroomBlocks + BigInt(1);
       const manifestData = "0x123456";
 
       const expiryTime = BigInt(await f3param.expiresAt());
@@ -74,22 +74,10 @@ describe("F3Parameters", function () {
       ).to.be.revertedWithCustomError(f3param, "UpdateExpired");
     });
 
-    it("Should revert if update is attempted after activation", async function () {
-      const { f3param, owner } = await loadFixture(deployOneYearExpireFixture);
-      const newActivationEpoch = (await time.latest()) + 1000;
-      const manifestData = "0x123456";
-
-      await f3param.connect(owner).updateActivationInformation(newActivationEpoch, manifestData);
-      await time.increaseTo(newActivationEpoch + 1);
-
-      await expect(
-        f3param.connect(owner).updateActivationInformation(newActivationEpoch + 1000, manifestData)
-      ).to.be.revertedWithCustomError(f3param, "UpdateAlreadyActive");
-    });
-
     it("Should revert if activation epoch is set to a past block", async function () {
       const { f3param, owner } = await loadFixture(deployOneYearExpireFixture);
-      const pastBlock = (await time.latest()) - 1;
+      await mine(10)
+      const pastBlock = BigInt(await ethers.provider.getBlockNumber() - 2);
       const manifestData = "0x123456";
 
       await expect(
@@ -97,6 +85,23 @@ describe("F3Parameters", function () {
       ).to.be.revertedWithCustomError(f3param, "UpdateActivationEpochInvalid")
         .withArgs(anyValue, pastBlock, "before current block");
     });
+
+    it("Should revert if update is attempted after activation", async function () {
+      const { f3param, owner } = await loadFixture(deployOneYearExpireFixture);
+      const currentBlockNumber = BigInt(await ethers.provider.getBlockNumber());
+      const minActivationHeadroomBlocks = await f3param.getMinActivationHeadroomBlocks();
+      const newActivationEpoch = currentBlockNumber + minActivationHeadroomBlocks + BigInt(1);
+      const manifestData = "0x123456";
+
+      await f3param.connect(owner).updateActivationInformation(newActivationEpoch, manifestData);
+      await mine(minActivationHeadroomBlocks + BigInt(100))
+
+      await expect(
+        f3param.connect(owner).updateActivationInformation(
+          newActivationEpoch + minActivationHeadroomBlocks + BigInt(100), manifestData)
+      ).to.be.revertedWithCustomError(f3param, "UpdateAlreadyActive");
+    });
+
   });
   describe('Parameter updates', function () {
 
