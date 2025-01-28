@@ -44,6 +44,19 @@ describe("F3Parameters", function () {
     });
   });
 
+  it("Should revert if activation epoch is less than minActivationHeadroomBlocks ahead of current block", async function () {
+    const { f3param, owner } = await loadFixture(deployOneYearExpireFixture);
+    const currentBlockNumber = BigInt(await ethers.provider.getBlockNumber());
+    const minActivationHeadroomBlocks = await f3param.getMinActivationHeadroomBlocks();
+    const newActivationEpoch = currentBlockNumber + minActivationHeadroomBlocks - BigInt(1);
+    const manifestData = "0x123456";
+
+    await expect(
+      f3param.connect(owner).updateActivationInformation(newActivationEpoch, manifestData)
+    ).to.be.revertedWithCustomError(f3param, "UpdateActivationEpochInvalid")
+      .withArgs(anyValue, newActivationEpoch, "based on block time");
+  });
+
   describe('Parameter updates', function () {
     it("Should update activation epoch and manifest data successfully", async function () {
       const { f3param, owner } = await loadFixture(deployOneYearExpireFixture);
