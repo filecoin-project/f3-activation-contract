@@ -66,7 +66,7 @@ describe("F3Parameters", function () {
 
       await expect(
         f3param.connect(owner).updateActivationInformation(newActivationEpoch, manifestData)
-      ).to.be.revertedWith("UpdateExpired");
+      ).to.be.revertedWithCustomError(f3param, "UpdateExpired");
     });
 
     it("Should revert if update is attempted after activation", async function () {
@@ -79,7 +79,7 @@ describe("F3Parameters", function () {
 
       await expect(
         f3param.connect(owner).updateActivationInformation(newActivationEpoch + 1000, manifestData)
-      ).to.be.revertedWith("UpdateAlreadyActive");
+      ).to.be.revertedWithCustomError(f3param, "UpdateAlreadyActive");
     });
 
     it("Should revert if activation epoch is set to a past block", async function () {
@@ -89,7 +89,8 @@ describe("F3Parameters", function () {
 
       await expect(
         f3param.connect(owner).updateActivationInformation(pastBlock, manifestData)
-      ).to.be.revertedWith("before current block");
+      ).to.be.revertedWithCustomError(f3param, "UpdateActivationEpochInvalid")
+        .withArgs(anyValue, pastBlock, "before current block");
     });
   });
   describe('Parameter updates', function () {
