@@ -62,7 +62,7 @@ describe("F3Parameters", function () {
       const manifestData = "0x123456";
 
       const expiryTime = BigInt(await f3param.expiresAt());
-      await time.increaseTo(expiryTime + BigInt(1));
+      await time.increaseTo(expiryTime + BigInt(100));
 
       await expect(
         f3param.connect(owner).updateActivationInformation(newActivationEpoch, manifestData)
