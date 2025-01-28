@@ -42,6 +42,55 @@ describe("F3Parameters", function () {
       expect(activation).to.equal(maxUint64);
     });
   });
+
+  describe('Parameter updates', function () {
+    it("Should update activation epoch and manifest data successfully", async function () {
+      const { f3param, owner } = await loadFixture(deployOneYearExpireFixture);
+      const newActivationEpoch = (await time.latest()) + 1000;
+      const manifestData = "0x123456";
+
+      await f3param.connect(owner).updateActivationInformation(newActivationEpoch, manifestData);
+
+      const [activationEpoch, data] = await f3param.activationInformation();
+      expect(activationEpoch).to.equal(newActivationEpoch);
+      expect(data).to.equal(manifestData);
+    });
+
+    it("Should revert if update is attempted after expiry", async function () {
+      const { f3param, owner } = await loadFixture(deployOneYearExpireFixture);
+      const newActivationEpoch = (await time.latest()) + 1000;
+      const manifestData = "0x123456";
+
+      await time.increaseTo((await f3param.expiresAt()) + 1);
+
+      await expect(
+        f3param.connect(owner).updateActivationInformation(newActivationEpoch, manifestData)
+      ).to.be.revertedWith("UpdateExpired");
+    });
+
+    it("Should revert if update is attempted after activation", async function () {
+      const { f3param, owner } = await loadFixture(deployOneYearExpireFixture);
+      const newActivationEpoch = (await time.latest()) + 1000;
+      const manifestData = "0x123456";
+
+      await f3param.connect(owner).updateActivationInformation(newActivationEpoch, manifestData);
+      await time.increaseTo(newActivationEpoch + 1);
+
+      await expect(
+        f3param.connect(owner).updateActivationInformation(newActivationEpoch + 1000, manifestData)
+      ).to.be.revertedWith("UpdateAlreadyActive");
+    });
+
+    it("Should revert if activation epoch is set to a past block", async function () {
+      const { f3param, owner } = await loadFixture(deployOneYearExpireFixture);
+      const pastBlock = (await time.latest()) - 1;
+      const manifestData = "0x123456";
+
+      await expect(
+        f3param.connect(owner).updateActivationInformation(pastBlock, manifestData)
+      ).to.be.revertedWith("before current block");
+    });
+  });
   describe('Parameter updates', function () {
 
   });
