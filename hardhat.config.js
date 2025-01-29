@@ -1,5 +1,6 @@
 require("@nomicfoundation/hardhat-toolbox");
-require("dotenv").config()
+require("dotenv").config();
+require("./tasks/F3Parameters");
 require("@starboardventures/hardhat-verify");
 
 const PRIVATE_KEY = process.env.PRIVATE_KEY
