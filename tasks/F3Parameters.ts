@@ -1,9 +1,10 @@
-const { task } = require("hardhat/config");
+import { task } from "hardhat/config";
+import { HardhatRuntimeEnvironment } from "hardhat/types";
 
 task("transferOwnership", "Transfers ownership of the contract to a new account")
   .addParam("contract", "The address of the contract")
   .addParam("newowner", "The address of the new owner")
-  .setAction(async (taskArgs, hre) => {
+  .setAction(async (taskArgs: { contract: string; newowner: string }, hre: HardhatRuntimeEnvironment) => {
     const contractAddress = taskArgs.contract;
     const newOwnerAddress = taskArgs.newowner;
 
@@ -19,7 +20,7 @@ task("transferOwnership", "Transfers ownership of the contract to a new account"
 
 task("queryOwnership", "Queries the current owner of the contract")
   .addParam("contract", "The address of the contract")
-  .setAction(async (taskArgs, hre) => {
+  .setAction(async (taskArgs: { contract: string }, hre: HardhatRuntimeEnvironment) => {
     const contractAddress = taskArgs.contract;
 
     const F3Parameters = await hre.ethers.getContractFactory("F3Parameters");
