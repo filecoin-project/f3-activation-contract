@@ -8,7 +8,7 @@ pragma solidity 0.8.23;
 import {Ownable} from "@openzeppelin/contracts/access/Ownable.sol";
 
 contract F3Parameters is Ownable {
-    /// @dev The expiry block number after which updates are not allowed.
+    /// @dev The expiry timestamp after which updates are not allowed.
     uint64 private immutable _expiry;
 
     /// @dev The block number at which the parameters become active.
@@ -19,7 +19,7 @@ contract F3Parameters is Ownable {
 
     /// @notice Initializes the contract with the owner and expiry block number.
     /// @param owner The address of the contract owner.
-    /// @param expiry The block number after which updates are not allowed.
+    /// @param expiry The timestamp after which updates are not allowed.
     constructor(address owner, uint64 expiry) Ownable(owner) {
         _expiry = expiry;
         _activationEpoch = type(uint64).max;
