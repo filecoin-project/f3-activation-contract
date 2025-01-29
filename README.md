@@ -10,6 +10,12 @@ For the full motivation and detailed design, please refer to the [FIP discussion
 - **Controlled Update Mechanism:** Requires consensus from Lotus, Forest, and Venus teams.
 - **Finalization and Self-Disabling:** Automatically disables after six months if not activated.
 
+## Development
+1. Install yarn (e.g., `brew install yarn`)
+2. Initialize yarn in the repo: `yarn`
+3. Set `PRIVATE_KEY` environment variable (e.g., `export PRIVATE_KEY='0000000000000000000000000000000000000000000000000000000000000000'`)
+4. Run tests: `yarn hardhat test`
+
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
