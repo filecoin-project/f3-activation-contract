@@ -16,3 +16,15 @@ task("transferOwnership", "Transfers ownership of the contract to a new account"
 
     console.log(`Ownership transferred to ${newOwnerAddress}`);
   });
+
+task("queryOwnership", "Queries the current owner of the contract")
+  .addParam("contract", "The address of the contract")
+  .setAction(async (taskArgs, hre) => {
+    const contractAddress = taskArgs.contract;
+
+    const F3Parameters = await hre.ethers.getContractFactory("F3Parameters");
+    const contract = F3Parameters.attach(contractAddress);
+
+    const ownerAddress = await contract.owner();
+    console.log(`The current owner of the contract at ${contractAddress} is ${ownerAddress}`);
+  });
