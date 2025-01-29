@@ -4,17 +4,21 @@ pragma solidity 0.8.23;
 /// @title F3Parameters
 /// @dev This contract manages parameters for the F3 system, allowing changes until the activation epoch.
 ///      It ensures a review period for the community before activation.
+/// @notice https://github.com/filecoin-project/FIPs/discussions/1102
 
 import {Ownable} from "@openzeppelin/contracts/access/Ownable.sol";
 
 contract F3Parameters is Ownable {
     /// @dev The expiry timestamp after which updates are not allowed.
+    ///      Note: updates also aren't allowed after the _activationEpoch.
     uint64 private immutable _expiry;
 
-    /// @dev The block number at which the parameters become active.
+    /// @dev The block number at which the parameters become active,
+    ///      and no further updates to _manifestData are accepted.
     uint64 private _activationEpoch;
 
     /// @dev The data associated with the manifest for the parameters.
+    ///      It is up to consumers (e.g., Lotus) to parse this data and be defensive in what they allowed be mutated as a result.
     bytes private _manifesetData;
 
     /// @notice Initializes the contract with the owner and expiry block number.
@@ -81,10 +85,10 @@ contract F3Parameters is Ownable {
             revert UpdateAlreadyActive();
         }
         if (activationEpoch <= block.number) {
-            revert UpdateActivationEpochInvalid(uint64(block.number), activationEpoch, "before current block");
+            revert UpdateActivationEpochInvalid(uint64(block.number), activationEpoch, "activationEpoch is before current block");
         }
         if (uint128(activationEpoch - block.number) < MIN_ACTIVATION_HEADROOM_BLOCKS) {
-            revert UpdateActivationEpochInvalid(uint64(block.number), activationEpoch, "based on block time");
+            revert UpdateActivationEpochInvalid(uint64(block.number), activationEpoch, "activationEpoch is within minActivationHeadroomBlocks from the current block");
         }
         
         _activationEpoch = activationEpoch;
