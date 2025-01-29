@@ -2,10 +2,10 @@ const { task } = require("hardhat/config");
 
 task("transferOwnership", "Transfers ownership of the contract to a new account")
   .addParam("contract", "The address of the contract")
-  .addParam("newOwner", "The address of the new owner")
+  .addParam("newowner", "The address of the new owner")
   .setAction(async (taskArgs, hre) => {
     const contractAddress = taskArgs.contract;
-    const newOwnerAddress = taskArgs.newOwner;
+    const newOwnerAddress = taskArgs.newowner;
 
     const F3Parameters = await hre.ethers.getContractFactory("F3Parameters");
     const contract = F3Parameters.attach(contractAddress);
