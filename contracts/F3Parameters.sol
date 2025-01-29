@@ -29,8 +29,8 @@ contract F3Parameters is Ownable {
         _activationEpoch = type(uint64).max;
     }
 
-    /// @notice Returns the expiry block number.
-    /// @return The expiry block number.
+    /// @notice Returns the expiry timestamp.
+    /// @return The expiry timestamp.
     function expiresAt() public view returns (uint64) {
         return _expiry;
     }
