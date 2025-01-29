@@ -1,5 +1,7 @@
 import { HardhatUserConfig } from "hardhat/config";
 import "@nomicfoundation/hardhat-toolbox";
+import "@nomicfoundation/hardhat-ignition-ethers";
+import "@starboardventures/hardhat-verify";
 import * as dotenv from "dotenv";
 import "./tasks/F3Parameters";
 
@@ -14,8 +16,6 @@ const config: HardhatUserConfig = {
     settings: {
       optimizer: {
         enabled: true,
-        runs: 1000,
-        details: { yul: false },
       },
     },
   },
@@ -36,6 +36,10 @@ const config: HardhatUserConfig = {
       url: "https://api.node.glif.io",
       accounts: [PRIVATE_KEY],
     },
+  },
+  starboardConfig: {
+      baseURL: 'https://fvm-calibration-api.starboard.ventures',
+      network: 'Calibration' // if there's no baseURL, url will depend on the network.  Mainnet || Calibration
   },
 };
 

@@ -5,7 +5,6 @@ pragma solidity 0.8.23;
 /// @dev This contract manages parameters for the F3 system, allowing changes until the activation epoch.
 ///      It ensures a review period for the community before activation.
 
-import "hardhat/console.sol";
 import {Ownable} from "@openzeppelin/contracts/access/Ownable.sol";
 
 contract F3Parameters is Ownable {
