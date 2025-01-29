@@ -115,5 +115,17 @@ describe("F3Parameters", function () {
       ).to.be.revertedWithCustomError(f3param, "UpdateAlreadyActive");
     });
 
+    it("Should revert if non-owner attempts to updateActivationInformation", async function() {
+      const { f3param, otherAccount } = await loadFixture(deployOneYearExpireFixture);
+      const currentBlockNumber = BigInt(await ethers.provider.getBlockNumber());
+      const minActivationHeadroomBlocks = await f3param.getMinActivationHeadroomBlocks();
+      const newActivationEpoch = currentBlockNumber + minActivationHeadroomBlocks + BigInt(1);
+      const manifestData = "0x123456";
+
+      await expect(
+        f3param.connect(otherAccount).updateActivationInformation(newActivationEpoch, manifestData)
+      ).to.be.revertedWithCustomError(f3param, "OwnableUnauthorizedAccount");
+    });
+
   });
 });
