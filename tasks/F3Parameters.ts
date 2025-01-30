@@ -37,18 +37,22 @@ task("fetchActivationInformation", "Fetches the activation information from the 
 
 task("setActivationInformation", "Sets the activation information on the contract")
   .addParam("contract", "The address of the contract")
-  .addParam("filepath", "The path to the JSON file containing the manifest data")
-  .addParam("activationepoch", "The new activation epoch block number")
-  .setAction(async (taskArgs: { contract: string; filepath: string; activationepoch: string }, hre: HardhatRuntimeEnvironment) => {
+  .addParam("manifest", "The path to the JSON file containing the manifest data")
+  .setAction(async (taskArgs: { contract: string; manifest: string }, hre: HardhatRuntimeEnvironment) => {
     const contractAddress = taskArgs.contract;
-    const filePath = taskArgs.filepath;
-    const activationEpoch = parseInt(taskArgs.activationepoch, 10);
+    const filePath = taskArgs.manifest;
 
     const F3Parameters = await hre.ethers.getContractFactory("F3Parameters");
     const contract = F3Parameters.attach(contractAddress);
 
     const jsonData = fs.readFileSync(filePath, "utf8");
+    const jsonObject = JSON.parse(jsonData);
+    const activationEpoch = jsonObject.BootstrapEpoch;
     const manifestData = zlib.deflateSync(Buffer.from(jsonData));
+
+    if (activationEpoch === undefined) {
+      throw new Error("BootstrapEpoch not found in the manifest JSON");
+    }
 
     console.log(`Setting activation information on contract at ${contractAddress}...`);
     const tx = await contract.updateActivationInformation(activationEpoch, manifestData);
