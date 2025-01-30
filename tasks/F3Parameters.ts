@@ -4,7 +4,7 @@ import fs from "fs";
 import zlib from "zlib";
 
 task("queryOwnership", "Queries the current owner of the contract")
-  .addParam("contract", "The address of the contract")
+  .addParam("contractAddress", "The address of the contract")
   .setAction(async (taskArgs: { contractAddress: string }, hre: HardhatRuntimeEnvironment) => {
     const contractAddress = taskArgs.contractAddress;
 
@@ -17,7 +17,7 @@ task("queryOwnership", "Queries the current owner of the contract")
 
 task("transferOwnership", "Transfers ownership of the contract to a new account")
   .addParam("contractAddress", "The address of the contract")
-  .addParam("newowner", "The address of the new owner")
+  .addParam("newOwnerAddress", "The address of the new owner")
   .setAction(async (taskArgs: { contractAddress: string; newOwnerAddress: string }, hre: HardhatRuntimeEnvironment) => {
     const contractAddress = taskArgs.contractAddress;
     const newOwnerAddress = taskArgs.newOwnerAddress;
