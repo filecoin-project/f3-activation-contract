@@ -31,9 +31,10 @@ task("queryActivationInformation", "Fetches the activation information from the 
     const [activationEpoch, manifestDataHex] = await contract.activationInformation();
     const manifestData = Buffer.from(manifestDataHex.slice(2), 'hex');
     let jsonData = "";
-	console.log(manifestData.length, "data", manifestData)
 
-    if (manifestData.length > 0) {
+    if (activationEpoch === BigInt("0xFFFFFFFFFFFFFFFF")) {
+      console.log("Activation is disabled (maxUint64).");
+    } else if (manifestData.length > 0) {
       jsonData = zlib.inflateSync(Buffer.from(manifestData)).toString();
       const jsonObject = JSON.parse(jsonData);
       const bootstrapEpoch = jsonObject.BootstrapEpoch;
