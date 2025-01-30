@@ -55,17 +55,30 @@ task("setActivationInformation", "Sets the activation information on the contrac
   .addParam("contract", "The address of the contract")
   .addParam("manifest", "The path to the JSON file containing the manifest data")
   .addFlag("print", "Print the message data instead of sending the activation update")
-  .setAction(async (taskArgs: { contract: string; manifest: string; print: boolean }, hre: HardhatRuntimeEnvironment) => {
+  .addFlag("disable", "Disable activation by setting activationEpoch to maxUint64 and using empty manifest data")
+  .setAction(async (taskArgs: { contract: string; manifest: string; print: boolean; disable: boolean }, hre: HardhatRuntimeEnvironment) => {
     const contractAddress = taskArgs.contract;
     const filePath = taskArgs.manifest;
 
     const F3Parameters = await hre.ethers.getContractFactory("F3Parameters");
     const contract = F3Parameters.attach(contractAddress);
 
-    const jsonData = fs.readFileSync(filePath, "utf8");
-    const jsonObject = JSON.parse(jsonData);
-    const activationEpoch = jsonObject.BootstrapEpoch;
-    const manifestData = zlib.deflateSync(Buffer.from(jsonData));
+    let activationEpoch: number;
+    let manifestData: Buffer;
+
+    if (taskArgs.disable) {
+      activationEpoch = BigInt("0xFFFFFFFFFFFFFFFF"); // maxUint64
+      manifestData = Buffer.from("");
+    } else {
+      const jsonData = fs.readFileSync(filePath, "utf8");
+      const jsonObject = JSON.parse(jsonData);
+      activationEpoch = jsonObject.BootstrapEpoch;
+      manifestData = zlib.deflateSync(Buffer.from(jsonData));
+
+      if (activationEpoch === undefined) {
+        throw new Error("BootstrapEpoch not found in the manifest JSON");
+      }
+    }
 
     if (activationEpoch === undefined) {
       throw new Error("BootstrapEpoch not found in the manifest JSON");
