@@ -7,7 +7,9 @@ import "./tasks/F3Parameters";
 
 dotenv.config();
 
-const PRIVATE_KEY = process.env.PRIVATE_KEY || "";
+
+// fallback to dummy key
+const PRIVATE_KEY = process.env.PRIVATE_KEY || "0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80"; 
 
 
 const config: HardhatUserConfig = {
@@ -41,6 +43,22 @@ const config: HardhatUserConfig = {
       baseURL: 'https://fvm-calibration-api.starboard.ventures',
       network: 'Calibration' // if there's no baseURL, url will depend on the network.  Mainnet || Calibration
   },
+
+  etherscan: {
+    apiKey: {
+      'calibrationnet': 'empty'
+    },
+    customChains: [
+      {
+        network: "calibrationnet",
+        chainId: 314159,
+        urls: {
+          apiURL: "https://filecoin-testnet.blockscout.com/api",
+          browserURL: "https://filecoin-testnet.blockscout.com"
+        }
+      }
+    ]
+  }
 };
 
 export default config;
