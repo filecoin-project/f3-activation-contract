@@ -31,7 +31,16 @@ task("fetchActivationInformation", "Fetches the activation information from the 
     const [activationEpoch, manifestData] = await contract.activationInformation();
     const jsonData = zlib.inflateSync(Buffer.from(manifestData)).toString();
 
-    console.log(`Activation Epoch: ${activationEpoch}`);
+    const jsonObject = JSON.parse(jsonData);
+    const bootstrapEpoch = jsonObject.BootstrapEpoch;
+
+    console.log(`Activation Epoch from Contract: ${activationEpoch}`);
+    console.log(`Bootstrap Epoch from Manifest: ${bootstrapEpoch}`);
+
+    if (activationEpoch !== bootstrapEpoch) {
+      throw new Error(`Mismatch: Activation Epoch (${activationEpoch}) does not match Bootstrap Epoch (${bootstrapEpoch})`);
+    }
+
     console.log(`Manifest Data: ${jsonData}`);
   });
 
