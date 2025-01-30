@@ -33,7 +33,7 @@ task("queryActivationInformation", "Fetches the activation information from the 
     let jsonData = "";
 
     if (activationEpoch === BigInt("0xFFFFFFFFFFFFFFFF")) {
-      console.log("Activation is disabled (maxUint64).");
+      console.log("Activation is disabled.");
     } else if (manifestData.length > 0) {
       jsonData = zlib.inflateSync(Buffer.from(manifestData)).toString();
       const jsonObject = JSON.parse(jsonData);
@@ -46,7 +46,7 @@ task("queryActivationInformation", "Fetches the activation information from the 
         throw new Error(`Mismatch: Activation Epoch (${activationEpoch}) does not match Bootstrap Epoch (${bootstrapEpoch})`);
       }
 
-      console.log(`Manifest Data: ${jsonData}`);
+      console.log(`Manifest Data:\n${jsonData}\n`);
     } else {
       console.log("No manifest data available.");
     }
