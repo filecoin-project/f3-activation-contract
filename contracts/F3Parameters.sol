@@ -21,9 +21,6 @@ contract F3Parameters is Ownable {
     ///      It is up to consumers (e.g., Lotus) to parse this data and be defensive in what they allowed be mutated as a result.
     bytes private _manifesetData;
 
-    /// @notice Emitted when the activation information is updated.
-    /// @param activationEpoch The new activation epoch block number.
-    event ActivationInformationUpdated(uint64 activationEpoch);
     /// @param owner The address of the contract owner.
     /// @param expiry The timestamp after which updates are not allowed.
     constructor(address owner, uint64 expiry) Ownable(owner) {
@@ -74,6 +71,10 @@ contract F3Parameters is Ownable {
     function getMinActivationHeadroomBlocks() public pure returns (uint128) {
         return MIN_ACTIVATION_HEADROOM_BLOCKS;
     }
+
+    /// @notice Emitted when the activation information is updated.
+    /// @param activationEpoch The new activation epoch block number.
+    event ActivationInformationUpdated(uint64 activationEpoch);
 
 	/// @notice Updates the activation epoch and manifest data.
     /// @dev Can only be called by the owner and before the expiry and activation epochs.
