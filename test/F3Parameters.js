@@ -38,9 +38,9 @@ describe("F3Parameters", function () {
 
       const maxUint64 = BigInt(2)**BigInt(64)-BigInt(1);
       expect(await f3param.activatesAtEpoch()).to.equal(maxUint64);
-      const [activation, params] = await f3param.activationInformation();
-      expect(params).to.have.lengthOf(2); // 0x prefix
-      expect(activation).to.equal(maxUint64);
+      const [activationEpoch, manifestData] = await f3param.activationInformation();
+      expect(activationEpoch).to.equal(maxUint64);
+      expect(manifestData).to.have.lengthOf(2); // 2 bytes for the "0x prefix"
     });
   });
 
@@ -53,12 +53,12 @@ describe("F3Parameters", function () {
       const manifestData = "0x123456";
 
       await expect(f3param.connect(owner).updateActivationInformation(newActivationEpoch, manifestData))
-		.to.emit(f3param, "ActivationInformationUpdated")
-		.withArgs(newActivationEpoch);
+        .to.emit(f3param, "ActivationInformationUpdated")
+        .withArgs(newActivationEpoch);
 
-      const [activationEpoch, data] = await f3param.activationInformation();
-      expect(activationEpoch).to.equal(newActivationEpoch);
-      expect(data).to.equal(manifestData);
+      const [returnedActivationEpoch, returnedManifestData] = await f3param.activationInformation();
+      expect(returnedActivationEpoch).to.equal(newActivationEpoch);
+      expect(returnedManifestData).to.equal(manifestData);
     });
 
     it("Should revert if activation epoch is set to a past block", async function () {

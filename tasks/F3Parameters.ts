@@ -3,12 +3,24 @@ import { HardhatRuntimeEnvironment } from "hardhat/types";
 import fs from "fs";
 import zlib from "zlib";
 
-task("transferOwnership", "Transfers ownership of the contract to a new account")
+task("queryOwnership", "Queries the current owner of the contract")
   .addParam("contract", "The address of the contract")
+  .setAction(async (taskArgs: { contractAddress: string }, hre: HardhatRuntimeEnvironment) => {
+    const contractAddress = taskArgs.contractAddress;
+
+    const F3Parameters = await hre.ethers.getContractFactory("F3Parameters");
+    const contract = F3Parameters.attach(contractAddress);
+
+    const ownerAddress = await contract.owner();
+    console.log(`The current owner of the contract at ${contractAddress} is ${ownerAddress}`);
+  });
+
+task("transferOwnership", "Transfers ownership of the contract to a new account")
+  .addParam("contractAddress", "The address of the contract")
   .addParam("newowner", "The address of the new owner")
-  .setAction(async (taskArgs: { contract: string; newowner: string }, hre: HardhatRuntimeEnvironment) => {
-    const contractAddress = taskArgs.contract;
-    const newOwnerAddress = taskArgs.newowner;
+  .setAction(async (taskArgs: { contractAddress: string; newOwnerAddress: string }, hre: HardhatRuntimeEnvironment) => {
+    const contractAddress = taskArgs.contractAddress;
+    const newOwnerAddress = taskArgs.newOwnerAddress;
 
     const F3Parameters = await hre.ethers.getContractFactory("F3Parameters");
     const contract = F3Parameters.attach(contractAddress);
@@ -25,9 +37,9 @@ task("transferOwnership", "Transfers ownership of the contract to a new account"
   });
 
 task("queryActivationInformation", "Fetches the activation information from the contract")
-  .addParam("contract", "The address of the contract")
-  .setAction(async (taskArgs: { contract: string }, hre: HardhatRuntimeEnvironment) => {
-    const contractAddress = taskArgs.contract;
+  .addParam("contractAddress", "The address of the contract")
+  .setAction(async (taskArgs: { contractAddress: string }, hre: HardhatRuntimeEnvironment) => {
+    const contractAddress = taskArgs.contractAddress;
 
     const F3Parameters = await hre.ethers.getContractFactory("F3Parameters");
     const contract = F3Parameters.attach(contractAddress);
@@ -47,7 +59,7 @@ task("queryActivationInformation", "Fetches the activation information from the 
       console.log(`Bootstrap Epoch from Manifest: ${bootstrapEpoch}`);
 
       if (activationEpoch !== BigInt(bootstrapEpoch)) {
-        throw new Error(`Mismatch: Activation Epoch (${activationEpoch}) does not match Bootstrap Epoch (${bootstrapEpoch})`);
+        throw new Error(`Mismatch: Activation Epoch (${activationEpoch}) from contract does not match Bootstrap Epoch (${bootstrapEpoch}) from manifest`);
       }
 
       console.log(`Manifest Data:\n${jsonData}\n`);
@@ -57,12 +69,12 @@ task("queryActivationInformation", "Fetches the activation information from the 
   });
 
 task("setActivationInformation", "Sets the activation information on the contract")
-  .addParam("contract", "The address of the contract")
-  .addParam("manifest", "The path to the JSON file containing the manifest data")
+  .addParam("contractAddress", "The address of the contract")
+  .addParam("manifestPath", "The path to the JSON file containing the uncompressed manifest data")
   .addFlag("print", "Print the message data instead of sending the activation update")
   .addFlag("disable", "Disable activation by setting activationEpoch to maxUint64 and using empty manifest data")
-  .setAction(async (taskArgs: { contract: string; manifest: string; print: boolean; disable: boolean }, hre: HardhatRuntimeEnvironment) => {
-    const contractAddress = taskArgs.contract;
+  .setAction(async (taskArgs: { contractAddress: string; manifest: string; print: boolean; disable: boolean }, hre: HardhatRuntimeEnvironment) => {
+    const contractAddress = taskArgs.contractAddress;
     const filePath = taskArgs.manifest;
 
     const F3Parameters = await hre.ethers.getContractFactory("F3Parameters");
@@ -78,15 +90,10 @@ task("setActivationInformation", "Sets the activation information on the contrac
       const jsonData = fs.readFileSync(filePath, "utf8");
       const jsonObject = JSON.parse(jsonData);
       activationEpoch = jsonObject.BootstrapEpoch;
-      manifestData = zlib.deflateSync(Buffer.from(jsonData));
-
       if (activationEpoch === undefined) {
         throw new Error("BootstrapEpoch not found in the manifest JSON");
       }
-    }
-
-    if (activationEpoch === undefined) {
-      throw new Error("BootstrapEpoch not found in the manifest JSON");
+      manifestData = zlib.deflateSync(Buffer.from(jsonData));
     }
 
     if (taskArgs.print) {
@@ -107,16 +114,4 @@ task("setActivationInformation", "Sets the activation information on the contrac
         console.error("Transaction failed");
       }
     }
-  });
-
-task("queryOwnership", "Queries the current owner of the contract")
-  .addParam("contract", "The address of the contract")
-  .setAction(async (taskArgs: { contract: string }, hre: HardhatRuntimeEnvironment) => {
-    const contractAddress = taskArgs.contract;
-
-    const F3Parameters = await hre.ethers.getContractFactory("F3Parameters");
-    const contract = F3Parameters.attach(contractAddress);
-
-    const ownerAddress = await contract.owner();
-    console.log(`The current owner of the contract at ${contractAddress} is ${ownerAddress}`);
   });
