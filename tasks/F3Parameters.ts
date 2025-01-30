@@ -29,19 +29,23 @@ task("queryActivationInformation", "Fetches the activation information from the 
     const contract = F3Parameters.attach(contractAddress);
 
     const [activationEpoch, manifestData] = await contract.activationInformation();
-    const jsonData = zlib.inflateSync(Buffer.from(manifestData)).toString();
+    let jsonData = "";
+    if (manifestData.length > 0) {
+      jsonData = zlib.inflateSync(Buffer.from(manifestData)).toString();
+      const jsonObject = JSON.parse(jsonData);
+      const bootstrapEpoch = jsonObject.BootstrapEpoch;
 
-    const jsonObject = JSON.parse(jsonData);
-    const bootstrapEpoch = jsonObject.BootstrapEpoch;
+      console.log(`Activation Epoch from Contract: ${activationEpoch}`);
+      console.log(`Bootstrap Epoch from Manifest: ${bootstrapEpoch}`);
 
-    console.log(`Activation Epoch from Contract: ${activationEpoch}`);
-    console.log(`Bootstrap Epoch from Manifest: ${bootstrapEpoch}`);
+      if (activationEpoch !== bootstrapEpoch) {
+        throw new Error(`Mismatch: Activation Epoch (${activationEpoch}) does not match Bootstrap Epoch (${bootstrapEpoch})`);
+      }
 
-    if (activationEpoch !== bootstrapEpoch) {
-      throw new Error(`Mismatch: Activation Epoch (${activationEpoch}) does not match Bootstrap Epoch (${bootstrapEpoch})`);
+      console.log(`Manifest Data: ${jsonData}`);
+    } else {
+      console.log("No manifest data available.");
     }
-
-    console.log(`Manifest Data: ${jsonData}`);
   });
 
 task("setActivationInformation", "Sets the activation information on the contract")
