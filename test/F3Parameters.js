@@ -52,7 +52,9 @@ describe("F3Parameters", function () {
       const newActivationEpoch = currentBlockNumber + minActivationHeadroomBlocks + BigInt(1);
       const manifestData = "0x123456";
 
-      await f3param.connect(owner).updateActivationInformation(newActivationEpoch, manifestData);
+      await expect(f3param.connect(owner).updateActivationInformation(newActivationEpoch, manifestData))
+		.to.emit(f3param, "ActivationInformationUpdated")
+		.withArgs(newActivationEpoch);
 
       const [activationEpoch, data] = await f3param.activationInformation();
       expect(activationEpoch).to.equal(newActivationEpoch);
