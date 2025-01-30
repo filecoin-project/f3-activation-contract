@@ -28,7 +28,8 @@ task("queryActivationInformation", "Fetches the activation information from the 
     const F3Parameters = await hre.ethers.getContractFactory("F3Parameters");
     const contract = F3Parameters.attach(contractAddress);
 
-    const [activationEpoch, manifestData] = await contract.activationInformation();
+    const [activationEpoch, manifestDataHex] = await contract.activationInformation();
+    const manifestData = Buffer.from(manifestDataHex.slice(2), 'hex');
     let jsonData = "";
 	console.log(manifestData.length, "data", manifestData)
 
