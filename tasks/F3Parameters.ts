@@ -20,7 +20,7 @@ task("transferOwnership", "Transfers ownership of the contract to a new account"
     console.log(`Ownership transferred to ${newOwnerAddress}`);
   });
 
-task("fetchActivationInformation", "Fetches the activation information from the contract")
+task("queryActivationInformation", "Fetches the activation information from the contract")
   .addParam("contract", "The address of the contract")
   .setAction(async (taskArgs: { contract: string }, hre: HardhatRuntimeEnvironment) => {
     const contractAddress = taskArgs.contract;
