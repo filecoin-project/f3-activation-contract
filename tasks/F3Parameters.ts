@@ -91,6 +91,7 @@ task("setActivationInformation", "Sets the activation information on the contrac
         [activationEpoch, manifestData]
       );
       console.log(`ABI Encoded Activation Information: ${abiEncodedData}`);
+      console.log(`Activation Information: [${activationEpoch}, "0x${manifestData.toString('hex')}"]`);
     } else {
       console.log(`Setting activation information on contract at ${contractAddress}...`);
       const tx = await contract.updateActivationInformation(activationEpoch, manifestData);
