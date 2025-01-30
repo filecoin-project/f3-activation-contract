@@ -30,6 +30,8 @@ task("queryActivationInformation", "Fetches the activation information from the 
 
     const [activationEpoch, manifestData] = await contract.activationInformation();
     let jsonData = "";
+	console.log(manifestData.length, "data", manifestData)
+
     if (manifestData.length > 0) {
       jsonData = zlib.inflateSync(Buffer.from(manifestData)).toString();
       const jsonObject = JSON.parse(jsonData);
