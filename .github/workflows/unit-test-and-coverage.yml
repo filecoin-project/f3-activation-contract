@@ -4,7 +4,7 @@ on:
   workflow_dispatch: # Allow manual triggering for testing the workflow itself
   
   pull_request:
-    branches: [ main ]
+    branches: [ master ]
 
 env:
   # Use a dummy key for unit tests
