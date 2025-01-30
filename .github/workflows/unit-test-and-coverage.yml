@@ -31,6 +31,9 @@ jobs:
       
     - name: Run coverage
       run: yarn hardhat coverage
+
+    - name: Show coverage
+      run: jq . coverage.json
     
     - name: Upload coverage reports to Codecov
       uses: codecov/codecov-action@v5
