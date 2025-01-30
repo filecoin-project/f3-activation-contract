@@ -47,7 +47,8 @@ task("fetchActivationInformation", "Fetches the activation information from the 
 task("setActivationInformation", "Sets the activation information on the contract")
   .addParam("contract", "The address of the contract")
   .addParam("manifest", "The path to the JSON file containing the manifest data")
-  .setAction(async (taskArgs: { contract: string; manifest: string }, hre: HardhatRuntimeEnvironment) => {
+  .addFlag("print", "Print the message data instead of sending the activation update")
+  .setAction(async (taskArgs: { contract: string; manifest: string; print: boolean }, hre: HardhatRuntimeEnvironment) => {
     const contractAddress = taskArgs.contract;
     const filePath = taskArgs.manifest;
 
@@ -63,11 +64,16 @@ task("setActivationInformation", "Sets the activation information on the contrac
       throw new Error("BootstrapEpoch not found in the manifest JSON");
     }
 
-    console.log(`Setting activation information on contract at ${contractAddress}...`);
-    const tx = await contract.updateActivationInformation(activationEpoch, manifestData);
-    await tx.wait();
+    if (taskArgs.print) {
+      console.log(`Activation Epoch: ${activationEpoch}`);
+      console.log(`Manifest Data: ${manifestData.toString('hex')}`);
+    } else {
+      console.log(`Setting activation information on contract at ${contractAddress}...`);
+      const tx = await contract.updateActivationInformation(activationEpoch, manifestData);
+      await tx.wait();
 
-    console.log(`Activation information set with epoch ${activationEpoch}`);
+      console.log(`Activation information set with epoch ${activationEpoch}`);
+    }
   });
 
 task("queryOwnership", "Queries the current owner of the contract")
