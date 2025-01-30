@@ -42,7 +42,7 @@ task("queryActivationInformation", "Fetches the activation information from the 
       console.log(`Activation Epoch from Contract: ${activationEpoch}`);
       console.log(`Bootstrap Epoch from Manifest: ${bootstrapEpoch}`);
 
-      if (activationEpoch !== bootstrapEpoch) {
+      if (activationEpoch !== BigInt(bootstrapEpoch)) {
         throw new Error(`Mismatch: Activation Epoch (${activationEpoch}) does not match Bootstrap Epoch (${bootstrapEpoch})`);
       }
 
