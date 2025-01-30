@@ -86,7 +86,8 @@ task("setActivationInformation", "Sets the activation information on the contrac
     }
 
     if (taskArgs.print) {
-      const abiEncodedData = hre.ethers.utils.defaultAbiCoder.encode(
+      const { ethers } = hre;
+      const abiEncodedData = ethers.utils.defaultAbiCoder.encode(
         ["uint64", "bytes"],
         [activationEpoch, manifestData]
       );
