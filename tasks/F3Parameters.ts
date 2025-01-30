@@ -15,9 +15,13 @@ task("transferOwnership", "Transfers ownership of the contract to a new account"
 
     console.log(`Transferring ownership of contract at ${contractAddress} to ${newOwnerAddress}...`);
     const tx = await contract.transferOwnership(newOwnerAddress);
-    await tx.wait();
+    const receipt = await tx.wait();
 
-    console.log(`Ownership transferred to ${newOwnerAddress}`);
+    if (receipt.status === 1) {
+      console.log(`Ownership transferred to ${newOwnerAddress}`);
+    } else {
+      console.error("Transaction failed");
+    }
   });
 
 task("queryActivationInformation", "Fetches the activation information from the contract")
@@ -95,9 +99,13 @@ task("setActivationInformation", "Sets the activation information on the contrac
     } else {
       console.log(`Setting activation information on contract at ${contractAddress}...`);
       const tx = await contract.updateActivationInformation(activationEpoch, manifestData);
-      await tx.wait();
+      const receipt = await tx.wait();
 
-      console.log(`Activation information set with epoch ${activationEpoch}`);
+      if (receipt.status === 1) {
+        console.log(`Activation information set with epoch ${activationEpoch}`);
+      } else {
+        console.error("Transaction failed");
+      }
     }
   });
 
