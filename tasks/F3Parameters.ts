@@ -86,9 +86,8 @@ task("setActivationInformation", "Sets the activation information on the contrac
     }
 
     if (taskArgs.print) {
-      const { ethers } = hre;
-      const abiEncodedData = ethers.utils.defaultAbiCoder.encode(
-        ["uint64", "bytes"],
+      const abiEncodedData = contract.interface.encodeFunctionData(
+        "updateActivationInformation",
         [activationEpoch, manifestData]
       );
       console.log(`ABI Encoded Activation Information: ${abiEncodedData}`);
