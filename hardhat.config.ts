@@ -40,15 +40,24 @@ const config: HardhatUserConfig = {
     },
   },
   starboardConfig: {
-      baseURL: 'https://fvm-calibration-api.starboard.ventures',
-      network: 'Calibration' // if there's no baseURL, url will depend on the network.  Mainnet || Calibration
+    baseURL: 'https://fvm-calibration-api.starboard.ventures',
+    network: 'Calibration' // if there's no baseURL, url will depend on the network.  Mainnet || Calibration
   },
 
   etherscan: {
     apiKey: {
-      'calibrationnet': 'empty'
+      'calibrationnet': 'empty',
+      'filecoinmainnet': 'empty',
     },
     customChains: [
+      {
+        network: "filecoinmainnet",
+        chainId: 314,
+        urls: {
+          apiURL: "https://filecoin.blockscout.com/api",
+          browserURL: "https://filecoin.blockscout.com"
+        }
+      },
       {
         network: "calibrationnet",
         chainId: 314159,
