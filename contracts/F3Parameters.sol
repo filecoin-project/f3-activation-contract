@@ -63,8 +63,9 @@ contract F3Parameters is Ownable {
 
     /// @dev The minimum headroom time in seconds before activation.
     uint128 constant MIN_ACTIVATION_HEADROOM = 3 days;
-	/// @dev The minimum headroom time in blocks.
-	uint128 public constant MIN_ACTIVATION_HEADROOM_BLOCKS = MIN_ACTIVATION_HEADROOM / BLOCK_TIME;
+
+    /// @dev The minimum headroom time in blocks.
+    uint128 public constant MIN_ACTIVATION_HEADROOM_BLOCKS = MIN_ACTIVATION_HEADROOM / BLOCK_TIME;
 
     /// @notice Returns the minimum activation headroom in blocks.
     /// @return The minimum activation headroom in blocks.
@@ -76,7 +77,7 @@ contract F3Parameters is Ownable {
     /// @param activationEpoch The new activation epoch block number.
     event ActivationInformationUpdated(uint64 activationEpoch);
 
-	/// @notice Updates the activation epoch and manifest data.
+    /// @notice Updates the activation epoch and manifest data.
     /// @dev Can only be called by the owner and before the expiry and activation epochs.
     /// @param activationEpoch The new activation epoch block number.
     /// @param manifestData The new manifest data.
@@ -93,7 +94,7 @@ contract F3Parameters is Ownable {
         if (uint128(activationEpoch - block.number) < MIN_ACTIVATION_HEADROOM_BLOCKS) {
             revert UpdateActivationEpochInvalid(uint64(block.number), activationEpoch, "activationEpoch is within minActivationHeadroomBlocks from the current block");
         }
-        
+
         _activationEpoch = activationEpoch;
         _manifesetData = manifestData;
 
