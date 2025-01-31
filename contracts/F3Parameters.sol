@@ -62,7 +62,7 @@ contract F3Parameters is Ownable {
     uint128 constant BLOCK_TIME = 30 seconds;
 
     /// @dev The minimum headroom time in seconds before activation.
-    uint128 constant MIN_ACTIVATION_HEADROOM = 4 days;
+    uint128 constant MIN_ACTIVATION_HEADROOM = 3 days;
 	/// @dev The minimum headroom time in blocks.
 	uint128 public constant MIN_ACTIVATION_HEADROOM_BLOCKS = MIN_ACTIVATION_HEADROOM / BLOCK_TIME;
 
