@@ -36,6 +36,7 @@ const config: HardhatUserConfig = {
     filecoinmainnet: {
       chainId: 314,
       url: "https://api.node.glif.io",
+      //url: 'https://rpc.ankr.com/filecoin',
       accounts: [PRIVATE_KEY],
     },
   },
@@ -67,6 +68,11 @@ const config: HardhatUserConfig = {
         }
       }
     ]
+  },
+  sourcify: {
+    enabled: true,
+    apiUrl: "https://sourcify.dev/server",
+    browserUrl: "https://repo.sourcify.dev",
   }
 };
 
