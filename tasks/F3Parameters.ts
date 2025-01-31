@@ -32,6 +32,13 @@ task("queryActivationInformation", "Fetches the activation information from the 
     const F3Parameters = await hre.ethers.getContractFactory("F3Parameters");
     const contract = F3Parameters.attach(contractAddress);
 
+    // Encode the function call data
+    const functionData = contract.interface.encodeFunctionData("activationInformation");
+
+    // Print the eth_call arguments
+    console.log(`eth_call to contract at address: ${contractAddress}`);
+    console.log(`Encoded function call data: ${functionData}`);
+
     const [activationEpoch, manifestDataHex] = await contract.activationInformation();
     const manifestData = Buffer.from(manifestDataHex.slice(2), 'hex');
     let jsonData = "";
