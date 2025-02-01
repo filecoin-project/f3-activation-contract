@@ -32,6 +32,13 @@ task("queryActivationInformation", "Fetches the activation information from the 
     const F3Parameters = await hre.ethers.getContractFactory("F3Parameters");
     const contract = F3Parameters.attach(contractAddress);
 
+    // Encode the function call data
+    const functionData = contract.interface.encodeFunctionData("activationInformation");
+
+    // Print the eth_call arguments
+    console.log(`eth_call to contract at address: ${contractAddress}`);
+    console.log(`Encoded function call data: ${functionData}`);
+
     const [activationEpoch, manifestDataHex] = await contract.activationInformation();
     const manifestData = Buffer.from(manifestDataHex.slice(2), 'hex');
     let jsonData = "";
@@ -39,7 +46,7 @@ task("queryActivationInformation", "Fetches the activation information from the 
     if (activationEpoch === BigInt("0xFFFFFFFFFFFFFFFF")) {
       console.log("Activation is disabled.");
     } else if (manifestData.length > 0) {
-      jsonData = zlib.inflateSync(Buffer.from(manifestData)).toString();
+      jsonData = zlib.inflateRawSync(Buffer.from(manifestData)).toString();
       const jsonObject = JSON.parse(jsonData);
       const bootstrapEpoch = jsonObject.BootstrapEpoch;
 
@@ -78,7 +85,7 @@ task("setActivationInformation", "Sets the activation information on the contrac
       const jsonData = fs.readFileSync(filePath, "utf8");
       const jsonObject = JSON.parse(jsonData);
       activationEpoch = jsonObject.BootstrapEpoch;
-      manifestData = zlib.deflateSync(Buffer.from(jsonData));
+      manifestData = zlib.deflateRawSync(Buffer.from(jsonData));
 
       if (activationEpoch === undefined) {
         throw new Error("BootstrapEpoch not found in the manifest JSON");
