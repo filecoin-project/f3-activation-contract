@@ -16,6 +16,8 @@ For the full motivation and detailed design, please refer to the [FIP discussion
 3. Set `PRIVATE_KEY` environment variable (e.g., `export PRIVATE_KEY='0000000000000000000000000000000000000000000000000000000000000000'`)
 4. Run tests: `yarn hardhat test`
 
+There are some notes in [devnotes.md](devnotes.md)
+
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
