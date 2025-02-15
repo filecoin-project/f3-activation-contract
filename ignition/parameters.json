@@ -1,5 +1,6 @@
 {
 	"F3ParametersModule": {
-		"expiration": 1753999200
+		"owner" : "0x53bd89Ff2Ff97541f42ACC3AFC0C0030e7410422",
+		"expiration": 1754006400
 	}
 }
