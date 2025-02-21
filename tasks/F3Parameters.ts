@@ -146,14 +146,17 @@ task("validateActivationMessage", "Validates a proposed activation message")
       const jsonData = fs.readFileSync(filePath, "utf8");
       const jsonObject = JSON.parse(jsonData);
       expectedActivationEpoch = jsonObject.BootstrapEpoch;
-      expectedManifestData = zlib.deflateRawSync(Buffer.from(jsonData));
+      expectedManifestData = Buffer.from(jsonData);
 
       if (expectedActivationEpoch === undefined) {
         throw new Error("BootstrapEpoch not found in the manifest JSON");
       }
     }
 
-    if (decodedData[0] !== expectedActivationEpoch || !decodedData[1].equals(expectedManifestData)) {
+    // Inflate the decoded manifest data
+    const inflatedManifestData = zlib.inflateRawSync(decodedData[1]);
+
+    if (decodedData[0] !== expectedActivationEpoch || !inflatedManifestData.equals(expectedManifestData)) {
       throw new Error("Validation failed: The decoded data does not match the expected values.");
     }
 
