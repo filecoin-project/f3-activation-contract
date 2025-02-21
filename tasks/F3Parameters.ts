@@ -149,8 +149,11 @@ task("validateActivationMessage", "Validates a proposed activation message")
       }
     }
 
-    // Inflate the decoded manifest data
-    const inflatedManifestData = zlib.inflateRawSync(decodedData[1]);
+    // Convert the decoded manifest data from hex to a buffer
+    const manifestDataBuffer = Buffer.from(decodedData[1].slice(2), 'hex');
+
+    // Inflate the buffer
+    const inflatedManifestData = zlib.inflateRawSync(manifestDataBuffer);
 
     if (decodedData[0] !== expectedActivationEpoch || !inflatedManifestData.equals(expectedManifestData)) {
       throw new Error("Validation failed: The decoded data does not match the expected values.");
