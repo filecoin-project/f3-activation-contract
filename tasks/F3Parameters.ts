@@ -1,6 +1,7 @@
 import { task } from "hardhat/config";
 import { HardhatRuntimeEnvironment } from "hardhat/types";
 import fs from "fs";
+import "colors"
 import { diffLines } from "diff";
 import zlib from "zlib";
 
@@ -164,15 +165,22 @@ task("validateActivationMessage", "Validates a proposed activation message")
       throw new Error("Failed to inflate manifest data: " + error.message);
     }
 
-    if (decodedData[0] !== expectedActivationEpoch || inflatedManifestData !== expectedManifestData.toString()) {
+    if (decodedData[0] != expectedActivationEpoch || inflatedManifestData !== expectedManifestData.toString()) {
       console.error("Validation failed: The decoded data does not match the expected values.");
 
+      console.log("Manifest epoch:", expectedActivationEpoch)
+      console.log("Call data epoch:", decodedData[0])
+
       // Generate and display the diff
-      const diff = diffLines(expectedManifestData.toString(), inflatedManifestData || "");
+      const diff = diffLines(expectedManifestData.toString(), inflatedManifestData);
       diff.forEach((part) => {
-        const color = part.added ? 'green' : part.removed ? 'red' : 'grey';
-        process.stderr.write(part.value[color]);
+        // green for additions, red for deletions
+        let text = part.added ? part.value.bgGreen :
+          part.removed ? part.value.bgRed :
+          part.value;
+        process.stderr.write(text);
       });
+
 
       throw new Error("Validation failed.");
     }
