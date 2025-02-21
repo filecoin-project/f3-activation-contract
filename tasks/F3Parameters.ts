@@ -101,7 +101,7 @@ task("setActivationInformation", "Sets the activation information on the contrac
         "updateActivationInformation",
         [activationEpoch, manifestData]
       );
-      console.log(`Activation Information: [${activationEpoch}, "0x${manifestData.toString('hex')}"]`);
+      console.log(`Activation Information:\n  ActivationEpoch: ${activationEpoch}\n  ManifestData: 0x${manifestData.toString('hex')}`);
       console.log(`ABI Encoded Activation Information: ${abiEncodedData}`);
     } else {
       console.log(`Setting activation information on contract at ${contractAddress}...`);
@@ -116,6 +116,50 @@ task("setActivationInformation", "Sets the activation information on the contrac
     }
   });
 
+task("validateActivationMessage", "Validates a proposed activation message")
+  .addParam("contract", "The address of the contract")
+  .addParam("manifest", "The path to the JSON file containing the manifest data")
+  .addOptionalParam("data", "The hex-encoded message data")
+  .addFlag("disable", "Verify the data for a --disable call")
+  .setAction(async (taskArgs: { contract: string; manifest: string; data?: string; disable: boolean }, hre: HardhatRuntimeEnvironment) => {
+    const contractAddress = taskArgs.contract;
+    const filePath = taskArgs.manifest;
+    let messageData = taskArgs.data;
+
+    if (!messageData) {
+      const prompt = require('prompt-sync')();
+      messageData = prompt('Enter the hex-encoded message data: ');
+    }
+
+    const F3Parameters = await hre.ethers.getContractFactory("F3Parameters");
+    const contract = F3Parameters.attach(contractAddress);
+
+    const decodedData = contract.interface.decodeFunctionData("updateActivationInformation", messageData);
+
+    let expectedActivationEpoch: number;
+    let expectedManifestData: Buffer;
+
+    if (taskArgs.disable) {
+      expectedActivationEpoch = BigInt("0xFFFFFFFFFFFFFFFF"); // maxUint64
+      expectedManifestData = Buffer.from("");
+    } else {
+      const jsonData = fs.readFileSync(filePath, "utf8");
+      const jsonObject = JSON.parse(jsonData);
+      expectedActivationEpoch = jsonObject.BootstrapEpoch;
+      expectedManifestData = zlib.deflateRawSync(Buffer.from(jsonData));
+
+      if (expectedActivationEpoch === undefined) {
+        throw new Error("BootstrapEpoch not found in the manifest JSON");
+      }
+    }
+
+    if (decodedData[0] !== expectedActivationEpoch || !decodedData[1].equals(expectedManifestData)) {
+      throw new Error("Validation failed: The decoded data does not match the expected values.");
+    }
+
+    console.log("Validation successful: The message data is correct.");
+  });
+
 task("queryOwnership", "Queries the current owner of the contract")
   .addParam("contract", "The address of the contract")
   .setAction(async (taskArgs: { contract: string }, hre: HardhatRuntimeEnvironment) => {
@@ -127,3 +171,4 @@ task("queryOwnership", "Queries the current owner of the contract")
     const ownerAddress = await contract.owner();
     console.log(`The current owner of the contract at ${contractAddress} is ${ownerAddress}`);
   });
+
