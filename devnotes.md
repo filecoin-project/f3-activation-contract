@@ -12,14 +12,7 @@ PRIVATE_KEY="..."
 Deploy the contract
 ```
 npx hardhat ignition deploy ignition/modules/F3Parameters.ts --network filecoinmainnet \
-   --parameters ignition/parameters.json
-```
-
-You can specify expiration and owner in the parameters.json file.
-
-You might have to wipe the existing deployment (chain-314 for mainnet, chain-314159 for calibraiton):
-```
-rm -rf ignition/deployments/chain-314/
+   --parameters ignition/parameters_mainnet.json --deployment-id mainnet
 ```
 
 ### Validating
