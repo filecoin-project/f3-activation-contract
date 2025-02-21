@@ -1,6 +1,7 @@
 import { task } from "hardhat/config";
 import { HardhatRuntimeEnvironment } from "hardhat/types";
 import fs from "fs";
+import { diffLines } from "diff";
 import zlib from "zlib";
 
 task("transferOwnership", "Transfers ownership of the contract to a new account")
@@ -124,7 +125,7 @@ task("validateActivationMessage", "Validates a proposed activation message")
   .setAction(async (taskArgs: { contract: string; manifest: string; data?: string; disable: boolean }, hre: HardhatRuntimeEnvironment) => {
     const contractAddress = taskArgs.contract;
     const filePath = taskArgs.manifest;
-    let messageData = taskArgs.data;
+    const messageData = taskArgs.data;
 
 
     const F3Parameters = await hre.ethers.getContractFactory("F3Parameters");
@@ -153,10 +154,19 @@ task("validateActivationMessage", "Validates a proposed activation message")
     const manifestDataBuffer = Buffer.from(decodedData[1].slice(2), 'hex');
 
     // Inflate the buffer
-    const inflatedManifestData = zlib.inflateRawSync(manifestDataBuffer);
+    const inflatedManifestData = zlib.inflateRawSync(manifestDataBuffer).toString();
 
-    if (decodedData[0] !== expectedActivationEpoch || !inflatedManifestData.equals(expectedManifestData)) {
-      throw new Error("Validation failed: The decoded data does not match the expected values.");
+    if (decodedData[0] !== expectedActivationEpoch || inflatedManifestData !== expectedManifestData.toString()) {
+      console.error("Validation failed: The decoded data does not match the expected values.");
+
+      // Generate and display the diff
+      const diff = diffLines(expectedManifestData.toString(), inflatedManifestData);
+      diff.forEach((part) => {
+        const color = part.added ? 'green' : part.removed ? 'red' : 'grey';
+        process.stderr.write(part.value[color]);
+      });
+
+      throw new Error("Validation failed.");
     }
 
     console.log("Validation successful: The message data is correct.");
