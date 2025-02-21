@@ -150,17 +150,25 @@ task("validateActivationMessage", "Validates a proposed activation message")
       }
     }
 
-    // Convert the decoded manifest data from hex to a buffer
+    // Ensure decodedData[1] is defined and convert it to a buffer
+    if (!decodedData[1]) {
+      throw new Error("Decoded manifest data is undefined.");
+    }
     const manifestDataBuffer = Buffer.from(decodedData[1].slice(2), 'hex');
 
     // Inflate the buffer
-    const inflatedManifestData = zlib.inflateRawSync(manifestDataBuffer).toString();
+    let inflatedManifestData: string;
+    try {
+      inflatedManifestData = zlib.inflateRawSync(manifestDataBuffer).toString();
+    } catch (error) {
+      throw new Error("Failed to inflate manifest data: " + error.message);
+    }
 
     if (decodedData[0] !== expectedActivationEpoch || inflatedManifestData !== expectedManifestData.toString()) {
       console.error("Validation failed: The decoded data does not match the expected values.");
 
       // Generate and display the diff
-      const diff = diffLines(expectedManifestData.toString(), inflatedManifestData);
+      const diff = diffLines(expectedManifestData.toString(), inflatedManifestData || "");
       diff.forEach((part) => {
         const color = part.added ? 'green' : part.removed ? 'red' : 'grey';
         process.stderr.write(part.value[color]);
