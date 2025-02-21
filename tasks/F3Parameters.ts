@@ -119,17 +119,13 @@ task("setActivationInformation", "Sets the activation information on the contrac
 task("validateActivationMessage", "Validates a proposed activation message")
   .addParam("contract", "The address of the contract")
   .addParam("manifest", "The path to the JSON file containing the manifest data")
-  .addOptionalParam("data", "The hex-encoded message data")
+  .addParam("data", "The hex-encoded message data")
   .addFlag("disable", "Verify the data for a --disable call")
   .setAction(async (taskArgs: { contract: string; manifest: string; data?: string; disable: boolean }, hre: HardhatRuntimeEnvironment) => {
     const contractAddress = taskArgs.contract;
     const filePath = taskArgs.manifest;
     let messageData = taskArgs.data;
 
-    if (!messageData) {
-      const prompt = require('prompt-sync')();
-      messageData = prompt('Enter the hex-encoded message data: ');
-    }
 
     const F3Parameters = await hre.ethers.getContractFactory("F3Parameters");
     const contract = F3Parameters.attach(contractAddress);
