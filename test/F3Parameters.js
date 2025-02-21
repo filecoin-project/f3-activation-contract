@@ -94,12 +94,29 @@ describe("F3Parameters", function () {
       const manifestData = "0x123456";
 
       await f3param.connect(owner).updateActivationInformation(newActivationEpoch, manifestData);
-      await mine(minActivationHeadroomBlocks + BigInt(100))
+      await mine(newActivationEpoch - currentBlockNumber + BigInt(1));
 
       await expect(
         f3param.connect(owner).updateActivationInformation(
           newActivationEpoch + minActivationHeadroomBlocks + BigInt(100), manifestData)
       ).to.be.revertedWithCustomError(f3param, "UpdateAlreadyActive");
+    });
+
+    it("Should revert if update is attempted after activation epoch is locked in", async function () {
+      const { f3param, owner } = await loadFixture(deployOneYearExpireFixture);
+      const currentBlockNumber = BigInt(await ethers.provider.getBlockNumber());
+      const minActivationHeadroomBlocks = await f3param.getMinActivationHeadroomBlocks();
+      const finality = BigInt(await f3param.FINALITY());
+      const newActivationEpoch = currentBlockNumber + minActivationHeadroomBlocks + BigInt(1);
+      const manifestData = "0x123456";
+
+      await f3param.connect(owner).updateActivationInformation(newActivationEpoch, manifestData);
+      await mine(newActivationEpoch - currentBlockNumber - finality);
+
+      await expect(
+        f3param.connect(owner).updateActivationInformation(
+          newActivationEpoch + minActivationHeadroomBlocks + BigInt(100), manifestData)
+      ).to.be.revertedWithCustomError(f3param, "UpdateAlreadyLockedIn");
     });
 
     it("Should revert if update is attempted after expiry", async function () {
