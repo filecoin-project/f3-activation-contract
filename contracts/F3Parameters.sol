@@ -54,6 +54,10 @@ contract F3Parameters is Ownable {
     /// @dev Error indicating that an update attempt was made after the activation epoch.
     error UpdateAlreadyActive();
 
+
+	/// @dev Error indicating that upgade was already locked in.
+	error UpdateAlreadyLockedIn();
+
     /// @dev Error indicating an invalid activation epoch update attempt.
     /// @param currentEpoch The current block number.
     /// @param activationEpoch The attempted activation epoch.
@@ -67,6 +71,9 @@ contract F3Parameters is Ownable {
     uint128 constant MIN_ACTIVATION_HEADROOM = 4 days;
     /// @dev The minimum headroom time in blocks.
     uint128 public constant MIN_ACTIVATION_HEADROOM_BLOCKS = MIN_ACTIVATION_HEADROOM / BLOCK_TIME;
+	
+	/// @dev The finality of the chain
+	uint64 public constant FINALITY = 900;
 
     /// @notice Returns the minimum activation headroom in blocks.
     /// @return The minimum activation headroom in blocks.
@@ -88,6 +95,9 @@ contract F3Parameters is Ownable {
         }
         if (block.number >= _activationEpoch) {
             revert UpdateAlreadyActive();
+        }
+        if (block.number + FINALITY >= _activationEpoch) {
+            revert UpdateAlreadyLockedIn();
         }
         if (activationEpoch <= block.number) {
             revert UpdateActivationEpochInvalid(uint64(block.number), activationEpoch, "activationEpoch is before current block");
