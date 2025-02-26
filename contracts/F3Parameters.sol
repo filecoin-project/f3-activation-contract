@@ -56,6 +56,8 @@ contract F3Parameters is Ownable {
 
 
 	/// @dev Error indicating that upgade was already locked in.
+	/// Implementations start using the manifest finality blocks before the activation epoch.
+	/// This error will appear in that period.
 	error UpdateAlreadyLockedIn();
 
     /// @dev Error indicating an invalid activation epoch update attempt.
@@ -72,7 +74,7 @@ contract F3Parameters is Ownable {
     /// @dev The minimum headroom time in blocks.
     uint128 public constant MIN_ACTIVATION_HEADROOM_BLOCKS = MIN_ACTIVATION_HEADROOM / BLOCK_TIME;
 	
-	/// @dev The finality of the chain
+	/// @dev The number of epochs for the chain to reach finality when using Expected Consensus
 	uint64 public constant FINALITY = 900;
 
     /// @notice Returns the minimum activation headroom in blocks.
