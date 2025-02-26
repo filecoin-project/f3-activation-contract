@@ -113,10 +113,12 @@ describe("F3Parameters", function () {
       await f3param.connect(owner).updateActivationInformation(newActivationEpoch, manifestData);
       await mine(newActivationEpoch - currentBlockNumber - finality);
 
-      await expect(
-        f3param.connect(owner).updateActivationInformation(
-          newActivationEpoch + minActivationHeadroomBlocks + BigInt(100), manifestData)
-      ).to.be.revertedWithCustomError(f3param, "UpdateAlreadyLockedIn");
+      for (let blocksToPushOutBy of [1, 100, 1000]) {
+        await expect(
+          f3param.connect(owner).updateActivationInformation(
+            newActivationEpoch + minActivationHeadroomBlocks + BigInt(blocksToPushOutBy), manifestData)
+        ).to.be.revertedWithCustomError(f3param, "UpdateAlreadyLockedIn");
+      }
     });
 
     it("Should revert if update is attempted after expiry", async function () {
