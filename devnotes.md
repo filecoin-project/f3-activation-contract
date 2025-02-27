@@ -49,7 +49,7 @@ This section describes how to perform end-to-end testing of the contract using a
    PRIVATE_KEY="..."
    ```
 
-2. **Deploy the Contract**: Deploy the contract using your private key. It is recommended to deploy on the mainnet for best results with BlockScout. Avoid specifying the parameters file to use the deploying key as the owner:
+2. **Deploy the Contract**: Deploy the contract using your private key. It is recommended to deploy on the mainnet for best results with BlockScout. Avoid specifying the `ignition/parameters_mainnet.json` file to use the deploying key as the owner:
    ```bash
    npx hardhat ignition deploy ignition/modules/F3Parameters.ts --network filecoinmainnet --deployment-id mainnet-scratchpad1
    ```
