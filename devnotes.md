@@ -40,7 +40,7 @@ npx hardhat ignition deploy ignition/modules/F3Parameters.ts --network filecoinm
 
 ## End-to-End Testing with Node Implementation
 
-This section describes how to perform end-to-end testing of the contract using a node implementation. The node implementation includes similar functionality to `queryActivationInformation` but operates on a polling basis.
+This section describes how to perform end-to-end testing of the contract using a node implementation (e.g., Lotus, Forest, Venus). The node implementation includes similar functionality to `queryActivationInformation` but operates on a polling basis as discussed in [FRC-0099](https://github.com/filecoin-project/FIPs/blob/master/FRCs/frc-0099.md).
 
 #### Deployment
 
