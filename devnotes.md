@@ -33,7 +33,7 @@ npx hardhat ignition deploy ignition/modules/F3Parameters.ts --network filecoinm
 3. Run the following command to prepare the validation input:
 
    ```bash
-   jq .input ignition/deployments/chain-314/build-info/[there is single json file here] > validation-input.json
+   jq .input ignition/deployments/chain-314/build-info/*.json> validation-input.json
    ```
 
 4. Upload `validation-input.json` to BlockScout.
