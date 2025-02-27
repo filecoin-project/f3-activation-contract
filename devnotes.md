@@ -38,7 +38,7 @@ npx hardhat ignition deploy ignition/modules/F3Parameters.ts --network filecoinm
 
 4. Upload `validation-input.json` to BlockScout.
 
-### End-to-End Testing with Node Implementation
+## End-to-End Testing with Node Implementation
 
 This section describes how to perform end-to-end testing of the contract using a node implementation. The node implementation includes similar functionality to `queryActivationInformation` but operates on a polling basis.
 
