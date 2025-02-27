@@ -19,7 +19,7 @@ PRIVATE_KEY="..."
 
 ### Deploy the Contract
 
-To deploy the contract, execute:
+To deploy the contract using the Safe multisig, execute:
 
 ```bash
 npx hardhat ignition deploy ignition/modules/F3Parameters.ts --network filecoinmainnet \
