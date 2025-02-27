@@ -55,7 +55,7 @@ This section describes how to perform end-to-end testing of the contract using a
    ```
    The deployment process could occasionally fail, in that case re-try. On success, contract address will be printed.
 
-#### Updating Activation Information
+### Updating Activation Information
 
 1. **Set Activation Information**: Use the `setActivationInformation` task to update the manifest:
    ```bash
