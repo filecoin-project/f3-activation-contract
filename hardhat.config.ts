@@ -28,6 +28,11 @@ const config: HardhatUserConfig = {
       url: "http://127.0.0.1:1234/rpc/v1",
       accounts: [PRIVATE_KEY],
     },
+    butterfly: {
+      chainId: 3141592,
+      url: "http://127.0.0.1:12345/rpc/v1",
+      accounts: [PRIVATE_KEY],
+    },
     calibrationnet: {
       chainId: 314159,
       url: "https://api.calibration.node.glif.io/rpc/v1",
