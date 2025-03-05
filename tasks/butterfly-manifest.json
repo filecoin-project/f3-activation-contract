@@ -1,8 +1,8 @@
 {
   "Pause": false,
-  "ProtocolVersion": 5,
+  "ProtocolVersion": 6,
   "InitialInstance": 0,
-  "BootstrapEpoch": 50000000,
+  "BootstrapEpoch": 29000,
   "NetworkName": "butterflynet",
   "ExplicitPower": null,
   "IgnoreECPower": false,
