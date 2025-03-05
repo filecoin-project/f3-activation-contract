@@ -15,7 +15,7 @@ task("transferOwnership", "Transfers ownership of the contract to a new account"
     const F3Parameters = await hre.ethers.getContractFactory("F3Parameters");
     const contract = F3Parameters.attach(contractAddress);
 
-    console.log(`Transferring ownership of contract at ${contractAddress} to ${newOwnerAddress}...`);
+    console.log(`Transferring ownership of contract at ${contractAddress} to ${newOwnerAddress}`);
     const tx = await contract.transferOwnership(newOwnerAddress);
     const receipt = await tx.wait();
 
@@ -106,7 +106,7 @@ task("setActivationInformation", "Sets the activation information on the contrac
       console.log(`Activation Information:\n  ActivationEpoch: ${activationEpoch}\n  ManifestData: 0x${manifestData.toString('hex')}`);
       console.log(`ABI Encoded Activation Information: ${abiEncodedData}`);
     } else {
-      console.log(`Setting activation information on contract at ${contractAddress}...`);
+      console.log(`Setting activation information on contract at ${contractAddress}`);
       const tx = await contract.updateActivationInformation(activationEpoch, manifestData);
       const receipt = await tx.wait();
 
