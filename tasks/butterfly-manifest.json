@@ -2,7 +2,7 @@
   "Pause": false,
   "ProtocolVersion": 7,
   "InitialInstance": 0,
-  "BootstrapEpoch": 500000,
+  "BootstrapEpoch": 21000,
   "NetworkName": "butterflynet",
   "ExplicitPower": null,
   "IgnoreECPower": false,
