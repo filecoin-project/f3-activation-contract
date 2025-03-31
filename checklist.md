@@ -52,6 +52,7 @@ This checklist will be copied into the ["tracking issue"](https://github.com/fil
     *   Action:
         *   Implementation partners (Lotus, Forest, Venus) should review the proposed transaction via the CLI tooling.
         *   Each partner uses their key to sign the transaction, indicating their approval of the F3 parameters and bootstrap epoch.
+  * Status: not started
 
 6.  **Transaction Publication and Execution**
     *   Goal: Activate F3 on the network.
