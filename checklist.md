@@ -64,7 +64,7 @@ This checklist will be copied into the ["tracking issue"](https://github.com/fil
 7.  **Verification and Monitoring**
     *   Goal: Confirm successful activation and ongoing stability.
     *   Action:
-        *   After the bootstrap epoch, verify that F3 is active on the network by monitoring relevant metrics .
+        *   After the bootstrap epoch, verify that F3 is active on the network by monitoring relevant metrics.
         *   Continuously monitor network performance and adjust parameters as needed, following the same process.
 * Status: not started
 
