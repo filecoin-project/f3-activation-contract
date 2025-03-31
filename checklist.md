@@ -5,6 +5,11 @@ This document outlines the procedure for activating F3 on the Filecoin network, 
 
 This checklist will be copied into the ["tracking issue"](https://github.com/filecoin-project/f3-activation-contract/issues/22) before we start the activation procedure so that the current status can be tracked and commented upon.
 
+### Meta
+* Mainnet contract address: [0xA19080A1Bcb82Bb61bcb9691EC94653Eb5315716](https://filecoin.blockscout.com/address/0xA19080A1Bcb82Bb61bcb9691EC94653Eb5315716?tab=contract)
+* Multisig owning contract: [0x53bd89Ff2Ff97541f42ACC3AFC0C0030e7410422](https://safe.filecoin.io/settings/setup?safe=filecoin:0x53bd89Ff2Ff97541f42ACC3AFC0C0030e7410422)
+
+### Steps
 1.  **Parameter Selection and Bootstrap Epoch Determination**
     *   Goal: Establish the "good parameter set" for F3 and the initial epoch for its activation.
     *   Action: Analyze nv25 passive testing results. Consider network performance, stability, and community input.
