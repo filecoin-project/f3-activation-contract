@@ -19,6 +19,7 @@ This checklist will be copied into the ["tracking issue"](https://github.com/fil
         * Post a link to the PR in #fil-implementers.
         * Post a link to the PR in the "tracking issue".
         *   Commit the manifest file into the `f3-activation-contract` repository.
+    *   Status: not started
     *   Output: A verifiable manifest file stored in the repository.
     *   **Manifest Link:** \[*Link to manifest file in repository*]
 
