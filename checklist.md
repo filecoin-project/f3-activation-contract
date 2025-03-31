@@ -59,6 +59,8 @@ This checklist will be copied into the ["tracking issue"](https://github.com/fil
     *   Action:
         *   Once the required number of signatures is collected, publish the signed transaction to the Filecoin network.
         *   The smart contract will execute the transaction, setting the F3 parameters and scheduling the bootstrap epoch.
+        * Post the transaction hash to the "tracking issue".
+    * Status: not started
     *   **Transaction Hash:** \[*Transaction Hash of the Activation Transaction*]
 
 7.  **Verification and Monitoring**
