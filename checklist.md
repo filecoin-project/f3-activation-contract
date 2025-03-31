@@ -8,6 +8,7 @@ This checklist will be copied into the ["tracking issue"](https://github.com/fil
 1.  **Parameter Selection and Bootstrap Epoch Determination**
     *   Goal: Establish the "good parameter set" for F3 and the initial epoch for its activation.
     *   Action: Analyze nv25 passive testing results. Consider network performance, stability, and community input.
+    * Status: not started
     *   Output: A finalized set of F3 parameters and a proposed bootstrap epoch are posted in the "tracking issue".
 
 2.  **Manifest Definition and Storage**
