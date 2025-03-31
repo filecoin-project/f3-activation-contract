@@ -44,7 +44,8 @@ This checklist will be copied into the ["tracking issue"](https://github.com/fil
         *   Use the SAFE Transaction Builder to craft a transaction that interacts with the F3 activation smart contract.
         *   The transaction should call the function on the smart contract that sets the F3 parameters and bootstrap epoch.
         *   Verify that the encoded manifest is correctly formatted and points to the parameters.
-    *   **Multi-Sig Address:** \[*Address of the Multi-Sig contract*]
+    * Status: not started
+    * Output: transaction 
 
 5.  **Multi-Sig Approval**
     *   Goal: Achieve consensus among implementation partners.
