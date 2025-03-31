@@ -11,7 +11,7 @@ This checklist will be copied into the ["tracking issue"](https://github.com/fil
     * Status: not started
     *   Output: A finalized set of F3 parameters and a proposed bootstrap epoch are posted in the "tracking issue".
 
-2.  **Manifest Definition and Storage**
+2.  **Manifest Definition, Storage, and Communication**
     *   Goal: Formally define the parameters and bootstrap epoch for distribution.
     *   Action:
         * Create a PR against [mainnet-manifest.json](https://github.com/filecoin-project/f3-activation-contract/blob/master/tasks/mainnet-manifest.json) that clearly defines all F3 parameters and the selected bootstrap epoch.
