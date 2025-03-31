@@ -1,6 +1,9 @@
 ## F3 Activation Procedure (FRC-0099)
 
-This document outlines the procedure for activating F3 on the Filecoin network, adhering to FRC-0099. The process involves a multi-step approach, leveraging a smart contract to ensure transparency and community consensus.
+### Purpose
+This document outlines the procedure for activating F3 on the Filecoin network, adhering to [FRC-0099](https://github.com/filecoin-project/FIPs/blob/master/FRCs/frc-0099.md). The process involves a multi-step approach, leveraging a smart contract to ensure transparency and community consensus.
+
+This checklist will be copied into the ["tracking issue"](https://github.com/filecoin-project/f3-activation-contract/issues/22) before we start the activation procedure so that the current status can be tracked and commented upon.
 
 1.  **Parameter Selection and Bootstrap Epoch Determination**
     *   Goal: Establish the "good parameter set" for F3 and the initial epoch for its activation.
