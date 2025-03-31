@@ -50,7 +50,7 @@ This checklist will be copied into the ["tracking issue"](https://github.com/fil
 5.  **Multi-Sig Approval**
     *   Goal: Achieve consensus among implementation partners.
     *   Action:
-        *   Implementation partners (Lotus, Forest, Venus) should review the proposed transaction in the SAFE Transaction Builder.
+        *   Implementation partners (Lotus, Forest, Venus) should review the proposed transaction via the CLI tooling.
         *   Each partner uses their key to sign the transaction, indicating their approval of the F3 parameters and bootstrap epoch.
 
 6.  **Transaction Publication and Execution**
