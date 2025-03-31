@@ -13,7 +13,10 @@ This checklist will be copied into the ["tracking issue"](https://github.com/fil
 2.  **Manifest Definition and Storage**
     *   Goal: Formally define the parameters and bootstrap epoch for distribution.
     *   Action:
-        *   Create a manifest file (e.g., JSON) that clearly defines all F3 parameters and the selected bootstrap epoch.
+        * Create a PR against [mainnet-manifest.json](https://github.com/filecoin-project/f3-activation-contract/blob/master/tasks/mainnet-manifest.json) that clearly defines all F3 parameters and the selected bootstrap epoch.
+        * Request review from Lotus (@masih), Forest (@LesnyRumcajs), and Venus (@simlecode).
+        * Post a link to the PR in #fil-implementers.
+        * Post a link to the PR in the "tracking issue".
         *   Commit the manifest file into the `f3-activation-contract` repository.
     *   Output: A verifiable manifest file stored in the repository.
     *   **Manifest Link:** \[*Link to manifest file in repository*]
