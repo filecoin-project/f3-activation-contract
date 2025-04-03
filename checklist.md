@@ -12,7 +12,7 @@ This checklist will be copied into the ["tracking issue"](https://github.com/fil
 ### Steps
 1.  **Parameter Selection and Bootstrap Epoch Determination**
     *   Goal: Establish the "good parameter set" for F3 and the initial epoch for its activation.
-    *   Action: Analyze nv25 passive testing results. Consider network performance, stability, and community input.
+    *   Action: Analyze [nv25 passive testing results](https://github.com/filecoin-project/go-f3/issues/802). Consider network performance, stability, and community input.
     * Status: not started
     *   Output: A finalized set of F3 parameters and a proposed bootstrap epoch are posted in the "tracking issue".
 
@@ -27,46 +27,39 @@ This checklist will be copied into the ["tracking issue"](https://github.com/fil
         * Post a link to the PR in the "tracking issue".
         *   Commit the manifest file into the `f3-activation-contract` repository.
     *   Status: not started
-    *   Output: A verifiable manifest file stored in the repository.
-    *   **Manifest Link:** \[*Link to manifest file in repository*]
+    *   Output: A verifiable manifest file stored in the repository
+        *   Manifest Link: [*Link to manifest file in repository*]
 
-3.  **Communication and Coordination**
-    *   Goal: Ensure all stakeholders are informed and aligned.
-    *   Action:
-        *   Communicate the proposed F3 parameters, bootstrap epoch, and rationale to Lotus, Forest, and Venus implementation teams.
-        *   Establish the expected encoding scheme of the manifest so that it is the same across implementations.
-        *   Share the manifest file and the address of the smart contract.
-    *   **Smart Contract Address:** \[*F3 Activation Smart Contract Address*]
-
-4.  **Smart Contract Interaction using SAFE Transaction Builder**
-    *   Goal: Prepare and execute the transaction that sets the parameters in the smart contract.
+3.  **Smart Contract Interaction using SAFE Transaction Builder**
+    *   Goal: Prepare the transaction that sets the parameters in the smart contract.
     *   Action:
         *   Use the SAFE Transaction Builder to craft a transaction that interacts with the F3 activation smart contract.
         *   The transaction should call the function on the smart contract that sets the F3 parameters and bootstrap epoch.
         *   Verify that the encoded manifest is correctly formatted and points to the parameters.
-    * Status: not started
-    * Output: transaction 
+    *   Status: not started
+    *   Output: screenshot of what was submitted to "SAFE Transaction Builder" 
 
-5.  **Multi-Sig Approval**
-    *   Goal: Achieve consensus among implementation partners.
+4.  **Multi-Sig Approval**
+    *   Goal: Achieve consensus among implementation partners
     *   Action:
         *   Implementation partners (Lotus, Forest, Venus) should review the proposed transaction via the CLI tooling.
         *   Each partner uses their key to sign the transaction, indicating their approval of the F3 parameters and bootstrap epoch.
-  * Status: not started
+    *   Status: not started
 
-6.  **Transaction Publication and Execution**
-    *   Goal: Activate F3 on the network.
+5.  **Transaction Publication and Execution**
+    *   Goal: Execute the transaction that sets the parameters in the smart contract, effectively starting the clock for F3 activation on the network.
     *   Action:
         *   Once the required number of signatures is collected, publish the signed transaction to the Filecoin network.
         *   The smart contract will execute the transaction, setting the F3 parameters and scheduling the bootstrap epoch.
-        * Post the transaction hash to the "tracking issue".
-    * Status: not started
-    *   **Transaction Hash:** \[*Transaction Hash of the Activation Transaction*]
+        *   Post the transaction hash to the "tracking issue".
+    *   Status: not started
+    *   Output: Transaction hash of the activation transaction
+        *   Transaction Hash: [*Transaction Hash of the Activation Transaction*]
 
-7.  **Verification and Monitoring**
-    *   Goal: Confirm successful activation and ongoing stability.
+6.  **Verification and Monitoring**
+    *   Goal: Confirm successful activation.
     *   Action:
         *   After the bootstrap epoch, verify that F3 is active on the network by monitoring relevant metrics.
-        *   Continuously monitor network performance and adjust parameters as needed, following the same process.
-* Status: not started
+        *   Close with comment the "tracking issue": "F3 is activated on mainnet.  Closing this issue.  Continuous network performance happens outside this issue."
+    *   Status: not started
 
