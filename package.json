@@ -31,7 +31,7 @@
     "typescript": ">=4.5.0"
   },
   "dependencies": {
-    "@openzeppelin/contracts": "^5.2.0",
+    "@openzeppelin/contracts": "^5.4.0",
     "@starboardventures/hardhat-verify": "^1.0.1",
     "colors": "^1.4.0",
     "diff": "^7.0.0"
