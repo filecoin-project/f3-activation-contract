@@ -34,6 +34,6 @@
     "@openzeppelin/contracts": "^5.2.0",
     "@starboardventures/hardhat-verify": "^1.0.1",
     "colors": "^1.4.0",
-    "diff": "^7.0.0"
+    "diff": "^8.0.3"
   }
 }
