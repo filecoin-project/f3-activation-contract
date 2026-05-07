@@ -1,3 +1,7 @@
+# Archived
+
+This repository is archived and no longer actively maintained.
+
 # F3 Activation Contract
 
 This repository contains the on-chain contract for managing the Fast Finality (F3) parameters for Filecoin. The contract allows for dynamic updates based on mainnet test results, streamlining the activation process with a single network upgrade.
@@ -21,4 +25,3 @@ There are some notes in [devnotes.md](devnotes.md)
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
